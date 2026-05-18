@@ -48,13 +48,13 @@ CriarInterface() {
 
     ; ⚙ e X colados à direita, terminando em W
     btnGear := myGui.AddText(
-        "x" (W - btnW*2 - 12) " y" btnY " w" btnW " h" btnH
+        "x" (W - btnW*2 - 2) " y" btnY " w" btnW " h" btnH
         " Center Background0x2D2D44 Border c0xAAAACC +0x200", "⚙")
     btnGear.SetFont("s9 Bold", GF())
     btnGear.OnEvent("Click", (*) => AbrirConfigGeral())
 
     btnClose := myGui.AddText(
-        "x" (W - btnW - 8) " y" btnY " w" btnW " h" btnH
+        "x" (W - btnW) " y" btnY " w" btnW " h" btnH
         " Center Background0x2D2D44 Border cF5F5F5 +0x200", "X")
     btnClose.SetFont("s8 Bold", GF())
     btnClose.OnEvent("Click", (*) => (SalvarPosicaoJanela(), myGui.Destroy(), myGui := 0))
@@ -71,21 +71,21 @@ CriarInterface() {
             macros[nome], slotW, 116)
 
         CriarBotaoLateral(myGui, pad + slotW + gap, y,
-            "⚙ CFG", cfgCallback, cfgW, 116)
+            "⚙`nCFG", cfgCallback, cfgW, 116)
 
         y += 116 + 8
         myGui.AddText("x0 y" y " w" W " h1 Background0x6060AA")
         y += 6
     }
 
-    CriarLinha("comboPrincipal",  "Combo Principal",  icons["comboPrincipal"],
+    CriarLinha("comboPrincipal",  "Combo principal",  icons["comboPrincipal"],
         (*) => AbrirConfigCombo("comboPrincipal"))
-    CriarLinha("comboSecundario", "Combo Secundário",     icons["comboSecundario"],
+    CriarLinha("comboSecundario", "Combo Secundario",     icons["comboSecundario"],
         (*) => AbrirConfigCombo("comboSecundario"))
-    CriarLinha("revive",          "Revive",          icons["revive"],
-        (*) => AbrirTelaConfigRevive("revive"))
     CriarLinha("comboRevive",     "Combo Revive",   icons["comboRevive"],
         (*) => AbrirConfigComboRevive())
+    CriarLinha("revive",          "Revive",          icons["revive"],
+        (*) => AbrirTelaConfigRevive("revive"))
     CriarLinha("cooldown",        "Cooldown",        icons["cooldown"],
         (*) => AbrirConfigCooldown())
 
