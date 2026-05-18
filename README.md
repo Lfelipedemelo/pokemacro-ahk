@@ -343,7 +343,7 @@ Controla o **intervalo em milissegundos** entre cada tecla enviada nos macros de
 
 - **Valor menor** = combo mais rápido (ex: 50ms)
 - **Valor maior** = combo mais lento, mais seguro (ex: 150ms)
-- **Padrão:** 92ms
+- **Padrão:** 600ms
 
 > Ajuste conforme a latência do servidor. Em servidores com alta latência, aumente o delay para evitar que habilidades sejam perdidas.
 
