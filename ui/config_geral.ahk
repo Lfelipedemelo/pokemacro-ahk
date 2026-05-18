@@ -11,7 +11,7 @@ GetFonteAtual() {
 
 GetSleepCombo() {
     global configFile
-    return Integer(IniRead(configFile, "Geral", "sleepCombo", "92"))
+    return Integer(IniRead(configFile, "Geral", "sleepCombo", "600"))
 }
 
 GetUsarPrefixoF() {
