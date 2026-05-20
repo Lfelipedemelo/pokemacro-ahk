@@ -92,8 +92,9 @@ ToggleMacroPorHotkey(nome) {
         }
     }
 
-    if (uiRefs.Has(nome))
-        AtualizarVisual(uiRefs[nome], macros[nome])
+    if (uiRefs.Has(nome)) {
+        try AtualizarVisual(uiRefs[nome], macros[nome])
+    }
 
     ShowHint(StrUpper(nome) ": " (macros[nome] ? "LIGADO" : "DESLIGADO"), 1200)
     AtualizarHotkeyCombo()
