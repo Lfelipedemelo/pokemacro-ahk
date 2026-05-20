@@ -18,14 +18,16 @@
 ; Inativo→ fundo normal + texto branco
 ; O fundo do txt é sempre sincronizado com o slot
 AtualizarVisual(ctrl, ativo) {
-    if (ativo) {
-        ctrl.slot.Opt("Background0x3D3D5C")
-        ctrl.txt.Opt("Background0x3D3D5C")
-        ctrl.txt.SetFont("cFFCC00 Bold")
-    } else {
-        ctrl.slot.Opt("Background0x2D2D44")
-        ctrl.txt.Opt("Background0x2D2D44")
-        ctrl.txt.SetFont("cF5F5F5 Bold")
+    try {
+        if (ativo) {
+            ctrl.slot.Opt("Background0x3D3D5C")
+            ctrl.txt.Opt("Background0x3D3D5C")
+            ctrl.txt.SetFont("cFFCC00 Bold")
+        } else {
+            ctrl.slot.Opt("Background0x2D2D44")
+            ctrl.txt.Opt("Background0x2D2D44")
+            ctrl.txt.SetFont("cF5F5F5 Bold")
+        }
     }
 }
 
@@ -87,12 +89,12 @@ ToggleMacro(nome, controle) {
             if (outro != nome && macros[outro]) {
                 macros[outro] := false
                 if (uiRefs.Has(outro))
-                    AtualizarVisual(uiRefs[outro], false)
+                    try AtualizarVisual(uiRefs[outro], false)
             }
         }
     }
 
-    AtualizarVisual(controle, macros[nome])
+    try AtualizarVisual(controle, macros[nome])
     AtualizarHotkeyCombo()
 }
 
