@@ -39,12 +39,12 @@ AtualizarHotkeyCombo() {
         }
     }
 
-    ; ── Registra hotkey de toggle (global, sem restrição de janela) ──
+    ; ── Registra hotkey de toggle (restrita à janela do jogo) ──
     RegistrarToggle(chave, nomeMacro) {
         if (chave = "")
             return
         try {
-            HotIf()
+            HotIf((*) => JanelaAtiva())
             Hotkey(chave, ((n, *) => ToggleMacroPorHotkey(n)).Bind(nomeMacro), "On")
             hotkeysRegistradas[chave] := true
         }
