@@ -67,9 +67,9 @@ AtualizarHotkeyCombo() {
     RegistrarExecucao(_MontarChaveHk(cfgCR["teclaHotkey"]),  "comboRevive", true)
     RegistrarToggle(  _MontarChaveHk(cfgCR["toggleHotkey"]), "comboRevive")
 
-    ; ── Cooldown ──
+    ; ── Cooldown ── (interrompível: a mesma hotkey cancela durante execução)
     cfgC := GetCfg("Cooldown")
-    RegistrarExecucao(_MontarChaveHk(cfgC["hotkeyCooldown"]),       "cooldown")
+    RegistrarExecucao(_MontarChaveHk(cfgC["hotkeyCooldown"]),       "cooldown", true)
     RegistrarToggle(  _MontarChaveHk(cfgC["toggleHotkeyCooldown"]), "cooldown")
 
     HotIf()
@@ -110,22 +110,19 @@ ProcessarPressionamento(thisHotkey) {
         teclaPura := StrReplace(teclaPura, p, "")
 
     ; Identifica qual macro esta tecla deve disparar
-    ehRevive     := macros["revive"]     && GetCfg("Revive")["teclaHotkey"]     = teclaPura
-    ehComboRevive := macros["comboRevive"] && GetCfg("comboRevive")["teclaHotkey"] = teclaPura
+    ehRevive      := macros["revive"]     && GetCfg("Revive")["teclaHotkey"]         = teclaPura
+    ehComboRevive := macros["comboRevive"] && GetCfg("comboRevive")["teclaHotkey"]   = teclaPura
+    ehCooldown    := macros["cooldown"]   && GetCfg("Cooldown")["hotkeyCooldown"]    = teclaPura
 
-    ; Revive e ComboRevive podem interromper o combo em execução —
-    ; não são bloqueados pela flag _macroExecutando.
-    ; Todos os outros macros respeitam a flag para evitar re-entrada.
-    if (!ehRevive && !ehComboRevive) {
+    ; Revive, ComboRevive e Cooldown (cancelamento) não são bloqueados pela flag
+    ehInterrompivel := ehRevive || ehComboRevive || ehCooldown
+
+    if (!ehInterrompivel) {
         if (_macroExecutando)
             return
     }
 
-    ; Combos não podem re-entrar
-    eCombo := (macros["comboPrincipal"]  && GetCfg("comboPrincipal")["teclaHotkey"]  = teclaPura)
-           || (macros["comboSecundario"] && GetCfg("comboSecundario")["teclaHotkey"] = teclaPura)
-
-    if (!ehRevive && !ehComboRevive)
+    if (!ehInterrompivel)
         _macroExecutando := true
 
     if      (macros["comboPrincipal"]  && GetCfg("comboPrincipal")["teclaHotkey"]  = teclaPura)
@@ -136,7 +133,7 @@ ProcessarPressionamento(thisHotkey) {
         ExecutarComboRevive()
     else if (ehRevive)
         ExecutarRevive()
-    else if (macros["cooldown"] && GetCfg("Cooldown")["hotkeyCooldown"] = teclaPura) {
+    else if (ehCooldown) {
         if (executandoCooldown) {
             executandoCooldown := false
             ShowHint("CANCELADO", 1000)
@@ -145,6 +142,6 @@ ProcessarPressionamento(thisHotkey) {
         }
     }
 
-    if (!ehRevive && !ehComboRevive)
+    if (!ehInterrompivel)
         _macroExecutando := false
 }
