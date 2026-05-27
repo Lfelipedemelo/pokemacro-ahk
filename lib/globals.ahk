@@ -39,7 +39,6 @@ global uiRefs := Map()
 
 ; Anti-double-click
 global lastClick := 0
-global hoverSlot := 0
 
 ; Controles de UI do Cooldown
 global radiosCooldown    := []
