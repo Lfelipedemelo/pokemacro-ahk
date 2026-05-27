@@ -15,7 +15,6 @@ CriarInterface() {
     myGui.OnEvent("Escape", (*) => (SalvarPosicaoJanela(), myGui.Destroy(), myGui := 0))
     myGui.OnEvent("Close",  (*) => (SalvarPosicaoJanela(), myGui := 0))
 
-    OnMessage(0x200, MouseMoveHandler)
     OnMessage(0x201, DragJanela)
 
     ; ── Dimensões ──
