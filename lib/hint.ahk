@@ -23,17 +23,14 @@ ShowHint(text, time := 1200) {
         return
 
     hint := Gui("+AlwaysOnTop -Caption +ToolWindow")
-    hint.BackColor := "0x1A1A2E"
+    hint.BackColor := T()["BG"]
 
-    ; Faixa amarela no topo (estilo Pokédex)
-    hint.AddText("x0 y0 w420 h5 Background0xFFCC00")
+    hint.AddText("x0 y0 w420 h5 Background" T()["ACCENT"])
 
-    ; Texto principal
-    txt := hint.AddText("x0 y5 Center c0xF5F5F5 w420 h44 +0x200", text)
+    txt := hint.AddText("x0 y5 Center c" T()["TEXT"] " w420 h44 +0x200", text)
     txt.SetFont("s9 Bold", GF())
 
-    ; Faixa amarela no rodapé
-    hint.AddText("x0 y49 w420 h5 Background0xFFCC00")
+    hint.AddText("x0 y49 w420 h5 Background" T()["ACCENT"])
 
     hint.Show("AutoSize Center")
 

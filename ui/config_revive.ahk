@@ -17,14 +17,14 @@ AbrirTelaConfigRevive(tipo) {
     cfg := GetCfg(tipo)
 
     cfgGui := Gui("-Caption +ToolWindow +AlwaysOnTop")
-    cfgGui.BackColor := "0x1A1A2E"
+    cfgGui.BackColor := T()["BG"]
     cfgGui.MarginX   := 0
     cfgGui.MarginY   := 0
     cfgGui.OnEvent("Escape", (*) => (cfgAberta := false, cfgGui.Destroy()))
     cfgGui.OnEvent("Close",  (*) => (cfgAberta := false))
     OnMessage(0x201, DragJanela)
 
-    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: " StrUpper(tipo), "0xCC0000",
+    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: " StrUpper(tipo), T()["STRIPE1"],
         (*) => ResetarConfigRevive(),
         (*) => (cfgAberta := false, cfgGui.Destroy()))
 
@@ -54,11 +54,11 @@ AbrirTelaConfigRevive(tipo) {
     y += 36 , _Sep(cfgGui, y, W) , y += 10
 
     ; ── Delay ──
-    lbl := cfgGui.AddText("x" pad " y" y " w" IW " h18 Center c0xAAAACC +0x200", "DELAY ENTRE CLIQUES (MS)")
+    lbl := cfgGui.AddText("x" pad " y" y " w" IW " h18 Center c" T()["MUTED"] " +0x200", "DELAY ENTRE CLIQUES (MS)")
     lbl.SetFont("s8 Bold", GF())
     y += 22
     editDelay := cfgGui.AddEdit(
-        "x" pad " y" y " w" IW " h26 Center Number c0xF5F5F5 Background0x2D2D44 -E0x200",
+        "x" pad " y" y " w" IW " h26 Center Number c" T()["TEXT"] " Background" T()["BG2"] " -E0x200",
         cfg["delayRevive"])
     editDelay.SetFont("s10 Bold", GF())
     editDelay.OnEvent("Change", (ctrl, *) => SalvarCfg("Revive", "delayRevive", ctrl.Value))
@@ -72,7 +72,7 @@ AbrirTelaConfigRevive(tipo) {
         (*) => CapturarCombo("Revive", "toggleHotkey", txtToggleRevive, "HOTKEY TOGGLE"))
 
     y += 38
-    cfgGui.AddText("x0 y" y " w" W " h12 Background0x1A1A2E")
+    cfgGui.AddText("x0 y" y " w" W " h12 Background" T()["BG"] "")
     cfgGui.Show("w" W " Center")
 }
 

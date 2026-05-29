@@ -19,13 +19,13 @@ AbrirConfigCooldown() {
     cfg := GetCfg("Cooldown")
 
     cfgGui := Gui("-Caption +ToolWindow +AlwaysOnTop")
-    cfgGui.BackColor := "0x1A1A2E"
+    cfgGui.BackColor := T()["BG"]
     cfgGui.MarginX   := 0
     cfgGui.MarginY   := 0
     cfgGui.OnEvent("Escape", (*) => (cfgAberta := false, cfgGui.Destroy()))
     OnMessage(0x201, DragJanela)
 
-    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: COOLDOWN", "0xFFCC00",
+    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: COOLDOWN", T()["STRIPE2"],
         (*) => ResetarCooldown(),
         (*) => (cfgAberta := false, cfgGui.Destroy()))
 
@@ -48,7 +48,7 @@ AbrirConfigCooldown() {
     y += 36 , _Sep(cfgGui, y, W) , y += 10
 
     ; ── Pokémon Inicial ──
-    lbl := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC", "POKÉMON INICIAL:")
+    lbl := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"] "", "POKÉMON INICIAL:")
     lbl.SetFont("s8 Bold", GF())
     y += 22
 
@@ -71,23 +71,23 @@ AbrirConfigCooldown() {
     Loop 4 {
         idx  := A_Index
         numX := pad + (colW * (idx-1))
-        n := cfgGui.AddText("x" numX " y" y " w" colW " h18 Center c0xF5F5F5 Background0x1A1A2E", idx)
+        n := cfgGui.AddText("x" numX " y" y " w" colW " h18 Center c" T()["TEXT"] " Background" T()["BG"] "", idx)
         n.SetFont("s9 Bold", GF())
     }
 
     y += 44 , _Sep(cfgGui, y, W) , y += 10
 
     ; ── Tempos ──
-    lbl2 := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC", "TEMPOS DE ESPERA (SEGUNDOS):")
+    lbl2 := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"] "", "TEMPOS DE ESPERA (SEGUNDOS):")
     lbl2.SetFont("s8 Bold", GF())
     y += 22
 
     Loop 4 {
         idx  := A_Index
         eX   := pad + (colW * (idx-1))
-        lE   := cfgGui.AddText("x" eX " y" y " w" colW " h18 Center c0xAAAACC Background0x1A1A2E", "PKM " idx)
+        lE   := cfgGui.AddText("x" eX " y" y " w" colW " h18 Center c" T()["MUTED"] " Background" T()["BG"] "", "PKM " idx)
         lE.SetFont("s8 Bold", GF())
-        edt  := cfgGui.AddEdit("x" (eX+2) " y" (y+20) " w" (colW-4) " h22 Center Background0x2D2D44 c0xF5F5F5 -E0x200",
+        edt  := cfgGui.AddEdit("x" (eX+2) " y" (y+20) " w" (colW-4) " h22 Center Background" T()["BG2"] " c" T()["TEXT"] " -E0x200",
             cfg["tempo" . idx])
         edt.SetFont("s9 Bold", GF())
         editsCooldown.Push(edt)
@@ -98,7 +98,7 @@ AbrirConfigCooldown() {
 
     ; ── Full Defense ──
     fdGlobal := cfg["fullDefense"]
-    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC",
+    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"] "",
         "FULL DEFENSE (TECLA GLOBAL: [ " StrUpper(fdGlobal) " ])")
     lbFD.SetFont("s8 Bold", GF())
     y += 22
@@ -110,9 +110,9 @@ AbrirConfigCooldown() {
     rFDNao := cfgGui.AddRadio("x" (pad+130) " y" y " w16 h18"       (!usaFD ? " Checked" : ""))
 
     ; Labels depois
-    lFDSim := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "ATIVAR")
+    lFDSim := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "ATIVAR")
     lFDSim.SetFont("s8", GF())
-    lFDNao := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "DESATIVAR")
+    lFDNao := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "DESATIVAR")
     lFDNao.SetFont("s8", GF())
 
     rFDSim.OnEvent("Click", (*) => SalvarCfg("Cooldown", "usarFullDefCD", "true"))
@@ -127,7 +127,7 @@ AbrirConfigCooldown() {
         (*) => CapturarCombo("Cooldown", "toggleHotkey", txtToggleCD, "HOTKEY TOGGLE"))
 
     y += 38
-    cfgGui.AddText("x0 y" y " w" W " h12 Background0x1A1A2E")
+    cfgGui.AddText("x0 y" y " w" W " h12 Background" T()["BG"] "")
     cfgGui.Show("w" W " Center")
 }
 

@@ -19,15 +19,14 @@ AbrirConfigCombo(tipo) {
     cfg := GetCfg(tipo)
 
     cfgGui := Gui("-Caption +ToolWindow +AlwaysOnTop")
-    cfgGui.BackColor := "0x1A1A2E"
+    cfgGui.BackColor := T()["BG"]
     cfgGui.MarginX   := 0
     cfgGui.MarginY   := 0
     cfgGui.OnEvent("Escape", (*) => _FecharConfigCombo(cfgGui))
     cfgGui.OnEvent("Close",  (*) => (cfgAberta := false))
     OnMessage(0x201, DragJanela)
 
-    ; ── Cabeçalho ──────────────────────────────────────
-    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: " StrUpper(tipo), "0x3B4CCA",
+    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: " StrUpper(tipo), T()["STRIPE3"],
         (*) => ResetarConfiguracoes(tipo),
         (*) => _FecharConfigCombo(cfgGui))
 
@@ -60,7 +59,7 @@ AbrirConfigCombo(tipo) {
     faGlobal := cfg["fullAttack"]
     fdGlobal := cfg["fullDefense"]
 
-    lbFA := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC", "FULL ATTACK (TECLA GLOBAL: [ " StrUpper(faGlobal) " ])")
+    lbFA := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"], "FULL ATTACK (TECLA GLOBAL: [ " StrUpper(faGlobal) " ])")
     lbFA.SetFont("s8 Bold", GF())
     y += 22
 
@@ -72,25 +71,25 @@ AbrirConfigCombo(tipo) {
     ; Radios Full Attack — consecutivos
     rAtkSim := cfgGui.AddRadio("x" pad              " y" y " w16 h18 Group" (usaAtk ? " Checked" : ""))
     rAtkNao := cfgGui.AddRadio("x" (pad+130)        " y" y " w16 h18"       (!usaAtk ? " Checked" : ""))
-    lAtkSim := cfgGui.AddText("x" (pad+20)   " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "ATIVAR")
+    lAtkSim := cfgGui.AddText("x" (pad+20)   " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"], "ATIVAR")
     lAtkSim.SetFont("s8", GF())
-    lAtkNao := cfgGui.AddText("x" (pad+150)  " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "DESATIVAR")
+    lAtkNao := cfgGui.AddText("x" (pad+150)  " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"], "DESATIVAR")
     lAtkNao.SetFont("s8", GF())
     rAtkSim.OnEvent("Click", (*) => SalvarCfg(tipo, "usarFullAtk", "true"))
     rAtkNao.OnEvent("Click", (*) => SalvarCfg(tipo, "usarFullAtk", "false"))
 
     y += 28 , _Sep(cfgGui, y, W) , y += 10
 
-    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC", "FULL DEFENSE (TECLA GLOBAL: [ " StrUpper(fdGlobal) " ])")
+    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"], "FULL DEFENSE (TECLA GLOBAL: [ " StrUpper(fdGlobal) " ])")
     lbFD.SetFont("s8 Bold", GF())
     y += 22
 
     ; Radios Full Defense — consecutivos
     rDefSim := cfgGui.AddRadio("x" pad              " y" y " w16 h18 Group" (usaDef ? " Checked" : ""))
     rDefNao := cfgGui.AddRadio("x" (pad+130)        " y" y " w16 h18"       (!usaDef ? " Checked" : ""))
-    lDefSim := cfgGui.AddText("x" (pad+20)   " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "ATIVAR")
+    lDefSim := cfgGui.AddText("x" (pad+20)   " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"], "ATIVAR")
     lDefSim.SetFont("s8", GF())
-    lDefNao := cfgGui.AddText("x" (pad+150)  " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "DESATIVAR")
+    lDefNao := cfgGui.AddText("x" (pad+150)  " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"], "DESATIVAR")
     lDefNao.SetFont("s8", GF())
     rDefSim.OnEvent("Click", (*) => SalvarCfg(tipo, "usarFullDef", "true"))
     rDefNao.OnEvent("Click", (*) => SalvarCfg(tipo, "usarFullDef", "false"))
@@ -105,7 +104,7 @@ AbrirConfigCombo(tipo) {
 
     y += 38
     ; Sentinela: garante que AutoSize inclui espaço abaixo do último botão
-    cfgGui.AddText("x0 y" y " w" W " h12 Background0x1A1A2E")
+    cfgGui.AddText("x0 y" y " w" W " h12 Background" T()["BG"])
     cfgGui.Show("w" W " Center")
 }
 
@@ -139,37 +138,32 @@ _LimparCamposCombo() {
 ; (definidos aqui, usados por todos os módulos de config)
 
 _CabecalhoConfig(g, W, IW, pad, titulo, corFaixa, cbReset, cbFechar) {
-    ; Faixa colorida topo
     g.AddText("x0 y0 w" W " h8 Background" corFaixa)
 
-    ; Título
-    t := g.AddText("x0 y8 w" (W - 56) " h32 Center c0xFFCC00 Background0x1A1A2E +0x200", titulo)
-    t.SetFont("s9 Bold", GF())
+    lblTitulo := g.AddText("x0 y8 w" (W-56) " h32 Center c" T()["ACCENT"] " Background" T()["BG"] " +0x200", titulo)
+    lblTitulo.SetFont("s9 Bold", GF())
 
-    ; Botão R
-    bR := g.AddText("x" (W-52) " y11 w22 h22 Center Background0x550000 c0xCC0000 Border +0x200", "R")
+    bR := g.AddText("x" (W-52) " y11 w22 h22 Center Background0x550000 c" T()["DANGER"] " Border +0x200", "R")
     bR.SetFont("s8 Bold", GF())
     bR.OnEvent("Click", cbReset)
 
-    ; Botão X
-    bX := g.AddText("x" (W-28) " y11 w22 h22 Center Background0x2D2D44 cF5F5F5 Border +0x200", "X")
+    bX := g.AddText("x" (W-28) " y11 w22 h22 Center Background" T()["BG2"] " c" T()["TEXT"] " Border +0x200", "X")
     bX.SetFont("s8 Bold", GF())
     bX.OnEvent("Click", cbFechar)
 
-    ; Separador
-    g.AddText("x0 y40 w" W " h1 Background0x6060AA")
+    g.AddText("x0 y40 w" W " h1 Background" T()["SEP"])
 }
 
 _CampoConfig(g, x, y, w, label, valor) {
-    lbl := g.AddText("x" x " y" y " w" w " c0xAAAACC", label)
+    lbl := g.AddText("x" x " y" y " w" w " c" T()["MUTED"], label)
     lbl.SetFont("s8 Bold", GF())
-    val := g.AddText("x" x " y" (y+20) " w" w " h22 Center c0xF5F5F5 Background0x2D2D44 Border", valor)
+    val := g.AddText("x" x " y" (y+20) " w" w " h22 Center c" T()["TEXT"] " Background" T()["BG2"] " Border", valor)
     val.SetFont("s9 Bold", GF())
     return val
 }
 
 _BtnConfig(g, x, y, w, texto, callback) {
-    btn := g.AddText("x" x " y" y " w" w " h30 Background0x2D2D44 Border Center +0x200 c0xFFCC00",
+    btn := g.AddText("x" x " y" y " w" w " h30 Background" T()["BG2"] " Border Center +0x200 c" T()["ACCENT"],
         "▶ " texto)
     btn.SetFont("s8 Bold", GF())
     btn.OnEvent("Click", callback)
@@ -177,31 +171,31 @@ _BtnConfig(g, x, y, w, texto, callback) {
 }
 
 _Sep(g, y, W) {
-    g.AddText("x0 y" y " w" W " h1 Background0x6060AA")
+    g.AddText("x0 y" y " w" W " h1 Background" T()["SEP"])
 }
 
 _SepDest(g, y, W) {
-    g.AddText("x0 y" y " w" W " h1 Background0x3B4CCA")
+    g.AddText("x0 y" y " w" W " h1 Background" T()["ACCENT2"])
 }
 
 _CriarGuiConfirmacao(titulo, subtitulo, cbSim, cbNao) {
     g := Gui("-Caption +ToolWindow +AlwaysOnTop")
-    g.BackColor := "0x1A1A2E"
+    g.BackColor := T()["BG"]
     g.MarginX   := 0
     g.MarginY   := 0
 
-    g.AddText("x0 y0 w320 h8 Background0xCC0000")
-    t := g.AddText("x10 y16 w300 h28 Center c0xFFCC00 +0x200", titulo)
-    t.SetFont("s10 Bold", GF())
-    s := g.AddText("x10 y50 w300 h20 Center c0xAAAACC +0x200", subtitulo)
-    s.SetFont("s8", GF())
-    g.AddText("x0 y76 w320 h1 Background0x6060AA")
+    g.AddText("x0 y0 w320 h8 Background" T()["DANGER"])
+    lblTitulo := g.AddText("x10 y16 w300 h28 Center c" T()["ACCENT"] " +0x200", titulo)
+    lblTitulo.SetFont("s10 Bold", GF())
+    lblSub := g.AddText("x10 y50 w300 h20 Center c" T()["MUTED"] " +0x200", subtitulo)
+    lblSub.SetFont("s8", GF())
+    g.AddText("x0 y76 w320 h1 Background" T()["SEP"])
 
-    bS := g.AddText("x15 y86 w135 h32 Center Background0x550000 Border c0xFFCC00 +0x200", "▶ SIM, RESETAR")
+    bS := g.AddText("x15 y86 w135 h32 Center Background0x550000 Border c" T()["ACCENT"] " +0x200", "▶ SIM, RESETAR")
     bS.SetFont("s8 Bold", GF())
     bS.OnEvent("Click", (ctrl, *) => cbSim(g))
 
-    bN := g.AddText("x170 y86 w135 h32 Center Background0x2D2D44 Border c0xAAAACC +0x200", "✖ NÃO")
+    bN := g.AddText("x170 y86 w135 h32 Center Background" T()["BG2"] " Border c" T()["MUTED"] " +0x200", "✖ NÃO")
     bN.SetFont("s8 Bold", GF())
     bN.OnEvent("Click", (ctrl, *) => cbNao(g))
 

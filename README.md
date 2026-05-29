@@ -37,6 +37,7 @@
 7. [Configurações Gerais](#configurações-gerais)
 8. [Sistema de Hotkeys](#sistema-de-hotkeys)
 9. [Perguntas Frequentes](#perguntas-frequentes)
+10. [Iniciar Automaticamente com o Windows](#-iniciar-automaticamente-com-o-windows)
 
 ---
 
@@ -79,7 +80,7 @@ macro_modular/
 │   └── cooldown.png
 │
 ├── lib\                         ← Utilitários internos (não edite)
-│   ├── globals.ahk              ← Estado global e mapa de macros
+│   ├── globals.ahk              ← Estado global, mapa de macros e sistema de temas
 │   ├── config.ahk               ← Leitura/escrita do config.ini
 │   ├── hint.ahk                 ← Notificações flutuantes na tela
 │   ├── window.ahk               ← Drag e posição da janela
@@ -114,11 +115,13 @@ macro_modular/
 
 ### Ativando um macro
 
-1. Clique no **ícone** do macro desejado na barra principal.
-2. O slot ficará com borda e texto em **amarelo** quando ativo.
+1. Clique no **slot** do macro desejado na barra principal.
+2. O slot ficará com a cor de destaque do tema quando ativo.
 3. Clique novamente para **desativar**.
 
 > 💡 **Exclusividade entre Combos:** Combo Principal, Combo Secundário e Combo Revive são mutuamente exclusivos — ativar um desliga automaticamente os outros.
+
+> 💡 **Miniatura de tecla:** Cada slot exibe a tecla do macro configurada em letras pequenas, para que você saiba qual botão pressionar sem precisar abrir as configurações.
 
 ### Configurando um macro
 
@@ -132,29 +135,42 @@ macro_modular/
 ## Interface Principal
 
 ```
-┌─────────────────────────────┐
-│ ✦ POKÉMACRO ✦         ⚙  X │  ← Barra de título (arraste para mover)
-├─────────────────────────────┤
-│  [ícone COMBO PRINC.]  ⚙CFG │  ← Slot de macro + botão de configuração
-├─────────────────────────────┤
-│  [ícone COMBO SEC.]    ⚙CFG │
-├─────────────────────────────┤
-│  [ícone REVIVE]        ⚙CFG │
-├─────────────────────────────┤
-│  [ícone COMBO REVIVE]  ⚙CFG │
-├─────────────────────────────┤
-│  [ícone COOLDOWN]      ⚙CFG │
-├─────────────────────────────┤
-│      CTRL+F12  FECHAR       │
-└─────────────────────────────┘
+┌──────────────────────────────────┐
+│ ✦ POKÉMACRO ✦           ↑  ⚙  X │  ← Título | Compacto | Config | Fechar
+├──────────────────────────────────┤
+│  [ícone COMBO PRINC.]  [F3-F8]   │
+│  COMBO PRINC.             ⚙ CFG  │
+├──────────────────────────────────┤
+│  [ícone COMBO SEC.]              │
+│  COMBO SEC.               ⚙ CFG  │
+├──────────────────────────────────┤
+│  [ícone COMBO REVIVE]            │
+│  COMBO REVIVE             ⚙ CFG  │
+├──────────────────────────────────┤
+│  [ícone REVIVE]                  │
+│  REVIVE                   ⚙ CFG  │
+├──────────────────────────────────┤
+│  [ícone COOLDOWN]                │
+│  COOLDOWN                 ⚙ CFG  │
+├──────────────────────────────────┤
+│         CTRL+F12  FECHAR         │
+└──────────────────────────────────┘
 ```
 
 | Botão | Função |
 |-------|--------|
-| Slot (ícone) | Ativa/desativa o macro |
+| Slot (ícone/texto) | Ativa/desativa o macro |
+| Miniatura `[TECLA]` | Indica qual tecla ativa o macro |
 | ⚙ CFG | Abre a tela de configuração do macro |
+| ↑ / ↓ | Alterna entre modo normal e modo compacto |
 | ⚙ (topo direito) | Abre as Configurações Gerais |
 | X (topo direito) | Fecha a interface |
+
+### Modo Compacto
+
+Clique no botão **↑** no canto superior direito para ativar o modo compacto.  
+Neste modo os slots exibem apenas o nome do macro em texto, sem ícones, ocupando muito menos espaço na tela.  
+Clique em **↓** para voltar ao modo normal com ícones.
 
 ---
 
@@ -169,6 +185,7 @@ macro_modular/
 **Como funciona:**
 1. Ao pressionar a **Tecla do Macro**, o sistema envia as teclas da sequência uma por uma.
 2. Cada tecla fica configurável entre usar prefixo `F` (ex: `F3`) ou só o número (ex: `3`) — veja [Configurações Gerais](#configurações-gerais).
+3. Pressionar a **Tecla do Macro** novamente enquanto executa **interrompe** o combo.
 
 #### Opções de Configuração
 
@@ -189,11 +206,11 @@ macro_modular/
 4. Clique em **▶ DEFINIR TECLA MACRO** e pressione a tecla/botão que vai disparar o combo.
 5. Se quiser Full Attack/Defense, vá em [Configurações Gerais](#configurações-gerais) e defina as teclas globais, depois ative-as aqui com o radio **ATIVAR**.
 6. Feche a configuração.
-7. Na barra principal, clique no slot do **Combo Principal** para ativá-lo (fica amarelo).
+7. Na barra principal, clique no slot do **Combo Principal** para ativá-lo.
 8. No jogo, pressione a tecla configurada — o combo será executado automaticamente.
 
 > **Exemplo:** Habilidades de F3 a F8.  
-> Botão Inicial: `F3` → Botão Final: `F8` → o macro envia F3, F4, F5, F6, F7, F8 em sequência.
+> Botão Inicial: `3` → Botão Final: `8` → com prefixo F ativo, o macro envia F3, F4, F5, F6, F7, F8 em sequência.
 
 ---
 
@@ -211,18 +228,20 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
 
 **Como funciona:**
 1. Ao pressionar a **Tecla do Macro**, o mouse se move instantaneamente para a posição do Pokémon a ser revivido.
-2. Executa o comando de revive (veja Modo Legado em [Configurações Gerais](#configurações-gerais)).
+2. Executa o comando de revive conforme o **Modo Legado** configurado.
 3. Aguarda o **Delay** configurado.
 4. Pressiona a tecla de confirmação (Hotkey Revive).
 5. Repete o comando de revive para confirmar.
 6. O mouse retorna à posição original.
+
+> 💡 **Interrupção de Combo:** Ao pressionar a tecla do Revive durante a execução de um Combo, o combo é interrompido imediatamente e o revive é executado.
 
 #### Opções de Configuração
 
 | Campo | O que configura |
 |-------|----------------|
 | **Posição do Clique** | Coordenadas X,Y na tela onde está o Pokémon a reviver |
-| **Hotkey Revive** | Tecla de confirmação pressionada durante o revive (ex: tecla de usar item) |
+| **Hotkey Revive** | Tecla de confirmação pressionada durante o revive |
 | **Tecla do Macro** | Tecla ou botão que dispara o revive |
 | **Delay entre Cliques (ms)** | Tempo em milissegundos entre o primeiro e segundo comando |
 | **Hotkey Ligar/Desligar** | Tecla para ativar/desativar o macro |
@@ -233,7 +252,7 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
 2. Clique em **▶ DEFINIR POSIÇÃO** e depois clique com o botão esquerdo do mouse **sobre o Pokémon** que você quer reviver no jogo.
 3. Clique em **▶ DEFINIR HOTKEY** e pressione a tecla que você usa para confirmar/usar o item de revive.
 4. Clique em **▶ DEFINIR TECLA MACRO** e pressione a tecla/botão que vai disparar o macro.
-5. Ajuste o **Delay** se necessário (padrão: 40ms). Aumente se o revive não funcionar consistentemente.
+5. Ajuste o **Delay** se necessário (padrão: 40ms).
 6. Feche e ative o macro na barra principal.
 
 > **Dica:** Use um botão extra do mouse (XButton1 ou XButton2) como Tecla do Macro para maior praticidade.
@@ -249,6 +268,8 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
 2. Aguarda o **Delay Após Revive** configurado.
 3. Executa o combo de habilidades configurado nesta tela.
 
+> ⚠️ **Importante:** O Combo Revive usa automaticamente a posição, delay e hotkey configurados na tela do **Revive**. Configure o Revive primeiro.
+
 #### Opções de Configuração
 
 | Campo | O que configura |
@@ -261,22 +282,13 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
 | **Delay Após Revive (ms)** | Tempo de espera entre o fim do revive e o início do combo |
 | **Hotkey Ligar/Desligar** | Tecla para ativar/desativar o macro |
 
-**Como configurar passo a passo:**
-
-1. **Primeiro configure o Revive** (as informações de posição, hotkey e delay são compartilhadas).
-2. Abra a configuração do Combo Revive (botão ⚙ CFG).
-3. Configure **Botão Inicial** e **Botão Final** com as habilidades do combo pós-revive.
-4. Configure a **Tecla do Macro**.
-5. Ajuste o **Delay Após Revive** — este é o tempo que o sistema aguarda para garantir que o Pokémon já voltou ao campo antes de usar as habilidades. Recomendado: **500ms a 1500ms** dependendo da velocidade do servidor.
-6. Feche e ative na barra principal.
-
-> ⚠️ **Importante:** O Combo Revive usa automaticamente a posição, delay e hotkey configurados na tela do **Revive**. Não é necessário (e não é possível) configurá-los novamente aqui.
+> **Delay recomendado:** 500ms a 1500ms dependendo da velocidade do servidor.
 
 ---
 
-### Cooldown (Não funcional no modo legado)
+### Cooldown
 
-**O que faz:** Macro de rotação progressiva que clica em uma posição da tela e pressiona `Ctrl+N` para cada Pokémon (do configurado até o 1), aguardando um tempo específico entre cada um. Útil para gerenciar o cooldown de habilidades de múltiplos Pokémons.
+**O que faz:** Macro de rotação progressiva que clica em uma posição da tela e pressiona `Ctrl+N` para cada Pokémon (do configurado até o 1), aguardando um tempo específico entre cada um.
 
 **Como funciona:**
 1. Ao pressionar a **Hotkey Cooldown**, o macro inicia.
@@ -285,8 +297,7 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
    - Move o mouse para a posição configurada e clica.
    - Pressiona `Ctrl+N` (onde N é o número do Pokémon).
    - Aguarda o tempo configurado para aquele Pokémon.
-   - Passa para o próximo Pokémon.
-4. Pressionar a **Hotkey Cooldown** novamente durante a execução **cancela** o macro.
+4. Pressionar a **Hotkey Cooldown** novamente durante a execução **cancela** o macro imediatamente.
 
 #### Opções de Configuração
 
@@ -295,29 +306,18 @@ Funciona exatamente igual ao **Combo Principal**, mas é uma configuração sepa
 | **Hotkey Cooldown** | Tecla que inicia/cancela o macro |
 | **Posição do Clique** | Coordenadas onde o mouse clica antes de cada `Ctrl+N` |
 | **Pokémon Inicial** | De qual Pokémon (1-4) começa a rotação |
-| **Tempos de Espera** | Tempo em segundos para cada Pokémon (PKM 1, PKM 2, PKM 3, PKM 4) |
+| **Tempos de Espera** | Tempo em segundos para cada slot (PKM 1, PKM 2, PKM 3, PKM 4) |
 | **Full Defense** | Ativa/desativa o envio de Full Defense ao iniciar |
 | **Hotkey Ligar/Desligar** | Tecla para ativar/desativar o macro |
 
-**Como configurar passo a passo:**
-
-1. Abra a configuração do Cooldown (botão ⚙ CFG).
-2. Clique em **▶ DEFINIR HOTKEY** e pressione a tecla que vai iniciar/cancelar o cooldown.
-3. Clique em **▶ DEFINIR POSIÇÃO** e clique com o botão esquerdo **na área do jogo** onde o clique deve ocorrer antes de cada troca.
-4. Selecione o **Pokémon Inicial** (de qual número começa a rotação).
-5. Defina os **Tempos de Espera** em segundos para cada slot de Pokémon.
-6. Se quiser Full Defense ao iniciar, vá em [Configurações Gerais](#configurações-gerais), defina a tecla global, e ative aqui.
-7. Feche e ative o macro na barra principal.
-
-> **Exemplo de uso:** Pokémon Inicial = 3, com tempos PKM3 = 10s, PKM2 = 8s, PKM1 = 6s.  
-> O macro vai: clicar → Ctrl+3 → esperar 10s → clicar → Ctrl+2 → esperar 8s → clicar → Ctrl+1 → esperar 6s → finalizar.
+> **Exemplo:** Pokémon Inicial = 3, tempos PKM3 = 10s, PKM2 = 8s, PKM1 = 6s.  
+> O macro vai: clicar → Ctrl+3 → 10s → clicar → Ctrl+2 → 8s → clicar → Ctrl+1 → 6s → fim.
 
 ---
 
 ## Configurações Gerais
 
-Acessado pelo botão **⚙** no canto superior direito da barra principal.
-
+Acessado pelo botão **⚙** no canto superior direito da barra principal.  
 Estas configurações são **globais** — afetam todos os macros do sistema.
 
 ---
@@ -337,19 +337,34 @@ Troca a fonte de todos os textos da interface simultaneamente.
 
 ---
 
-### 2. Delay Entre Teclas do Combo (ms)
+### 2. Tema de Cores
+
+Altera o esquema de cores de toda a interface simultaneamente.
+
+| Tema | Descrição |
+|------|-----------|
+| **Pokédex Vermelho** | Tema padrão — vermelho, amarelo e azul clássico Pokémon |
+| **Night Blue** | Tons de azul escuro, inspirado na noite |
+| **Gold** | Preto e dourado, elegante |
+| **Minimal** | Cinza escuro, discreto e limpo |
+
+> Ao selecionar um tema, a interface fecha e reabre automaticamente com as novas cores aplicadas.
+
+---
+
+### 3. Delay Entre Teclas do Combo (ms)
 
 Controla o **intervalo em milissegundos** entre cada tecla enviada nos macros de Combo.
 
 - **Valor menor** = combo mais rápido (ex: 50ms)
 - **Valor maior** = combo mais lento, mais seguro (ex: 150ms)
-- **Padrão:** 600ms
+- **Padrão:** 92ms
 
 > Ajuste conforme a latência do servidor. Em servidores com alta latência, aumente o delay para evitar que habilidades sejam perdidas.
 
 ---
 
-### 3. Usar Prefixo [F] nas Teclas
+### 4. Usar Prefixo [F] nas Teclas
 
 Define como as teclas do combo são enviadas ao jogo.
 
@@ -358,13 +373,13 @@ Define como as teclas do combo são enviadas ao jogo.
 | **SIM (F1..F9)** | `F1`, `F2`, `F3`... | Quando as habilidades estão mapeadas nas teclas F |
 | **NÃO (1..9)** | `1`, `2`, `3`... | Quando as habilidades estão mapeadas nos números |
 
-> **Exemplo:** Se seu Botão Inicial é `3` e Botão Final é `6`:  
+> **Exemplo:** Botão Inicial `3`, Botão Final `6`:  
 > - Com prefixo F: envia `F3`, `F4`, `F5`, `F6`  
 > - Sem prefixo F: envia `3`, `4`, `5`, `6`
 
 ---
 
-### 4. Modo Legado (Revive)
+### 5. Modo Legado (Revive)
 
 Altera o comportamento dos macros de **Revive** e **Combo Revive**.
 
@@ -375,21 +390,19 @@ Altera o comportamento dos macros de **Revive** e **Combo Revive**.
 
 ---
 
-### 5. Tecla Full Attack (Global)
+### 6. Tecla Full Attack (Global)
 
-Define a tecla que será enviada **antes** de iniciar qualquer combo (quando Full Attack está ativado na configuração do combo).
+Define a tecla enviada **antes** de iniciar qualquer combo (quando Full Attack está ativado na configuração do combo).
 
-- Clique em **▶ DEFINIR FULL ATTACK** e pressione a tecla desejada.
-- Esta tecla é compartilhada entre Combo Principal, Combo Secundário e Combo Revive.
-- Cada combo tem seu próprio interruptor ATIVAR/DESATIVAR nas suas configurações individuais.
+- Compartilhada entre Combo Principal, Combo Secundário e Combo Revive.
+- Cada combo tem seu próprio interruptor ATIVAR/DESATIVAR nas configurações individuais.
 
 ---
 
-### 6. Tecla Full Defense (Global)
+### 7. Tecla Full Defense (Global)
 
-Define a tecla que será enviada **após** o término de qualquer combo ou ao iniciar o Cooldown (quando Full Defense está ativado).
+Define a tecla enviada **após** o término de qualquer combo ou ao iniciar o Cooldown (quando Full Defense está ativado).
 
-- Clique em **▶ DEFINIR FULL DEFENSE** e pressione a tecla desejada.
 - Compartilhada entre todos os macros que suportam Full Defense.
 
 ---
@@ -403,7 +416,9 @@ O sistema possui dois tipos distintos de hotkey para cada macro:
 | Tipo | Função | Restrição |
 |------|--------|-----------|
 | **Tecla do Macro** | Executa o macro quando pressionada | Só funciona com o jogo em foco e macro ativado |
-| **Hotkey Ligar/Desligar** | Ativa ou desativa o macro | Funciona em qualquer janela, sempre |
+| **Hotkey Ligar/Desligar** | Ativa ou desativa o macro | Só funciona com o jogo em foco |
+
+> ⚠️ **Todas as hotkeys** — tanto de execução quanto de ligar/desligar — **só funcionam quando o jogo está em foco**. Isso evita acionamentos acidentais ao usar outras janelas.
 
 ### Teclas suportadas
 
@@ -412,14 +427,16 @@ Ao pressionar **▶ DEFINIR** em qualquer campo de tecla, o sistema aguarda voc�
 - Qualquer tecla do teclado (letras, números, F1-F12, etc.)
 - Botões extras do mouse: **XButton1**, **XButton2**, **MButton**
 
-> ⚠️ **LButton** (botão esquerdo) e **RButton** (botão direito) não são capturáveis como hotkey de execução para evitar conflitos com o uso normal do mouse.
+> ⚠️ **LButton** e **RButton** não são capturáveis para evitar conflitos com o uso normal do mouse.
 
 ### Prevenção de conflitos
 
-O sistema possui proteção contra conflito de hotkeys:
+O sistema possui proteção avançada contra conflito de hotkeys:
 
-- Se a **Tecla do Macro** for a mesma tecla que o jogo usa para uma ação (ex: `F3` é tanto a hotkey quanto a primeira habilidade do combo), o sistema **desativa temporariamente** essa hotkey durante a execução do macro, evitando que a tecla seja acionada no jogo duplamente.
-- Enquanto um macro está sendo executado, nenhuma outra hotkey de execução é aceita.
+- **Mesma tecla no macro e no jogo:** Se a Tecla do Macro for a mesma que uma ação do jogo (ex: `F3` é hotkey e primeira habilidade do combo), o sistema usa supressão de input — a tecla não é enviada ao jogo duas vezes.
+- **Re-entrada bloqueada:** Enquanto um combo está em execução, novas execuções do mesmo combo são bloqueadas.
+- **Revive interrompe Combo:** Pressionar a tecla do Revive ou Combo Revive durante a execução de um combo **interrompe o combo imediatamente** e executa o revive.
+- **Cancelamento do Cooldown:** Pressionar a hotkey do Cooldown durante a execução cancela o macro imediatamente.
 
 ### Botão Reset (R)
 
@@ -434,7 +451,7 @@ Ao confirmar, **apaga todas as configurações** daquele macro e retorna tudo pa
 
 **O macro não está funcionando. O que verificar?**
 
-1. Verifique se o macro está **ativado** (slot amarelo na barra principal).
+1. Verifique se o macro está **ativado** (slot com cor de destaque na barra principal).
 2. Verifique se a janela do jogo está em **foco** (em primeiro plano).
 3. Verifique se a **Tecla do Macro** está configurada (não deve estar como `N/A`).
 4. Verifique se o processo do jogo é `pxgme.exe` — o sistema monitora especificamente este processo.
@@ -470,13 +487,31 @@ Ao confirmar, **apaga todas as configurações** daquele macro e retorna tudo pa
 
 ---
 
+**A interface ficou muito grande na tela. Como reduzir?**
+
+- Clique no botão **↑** no canto superior direito para ativar o **modo compacto**.  
+  Neste modo os slots exibem apenas o nome do macro em texto, sem ícones.
+- Clique em **↓** para voltar ao modo normal.
+
+---
+
 **Posso usar o sistema em outro jogo?**
 
 O sistema está configurado para detectar a janela `pxgme.exe`. Para usar em outro jogo, edite a linha no arquivo `macros\hotkeys.ahk`:
-```
+```autohotkey
 JanelaAtiva() => WinActive("ahk_exe pxgme.exe")
 ```
 Substitua `pxgme.exe` pelo nome do executável do seu jogo.
+
+---
+
+**Como alterar o visual da interface?**
+
+Abra as **Configurações Gerais** (botão ⚙ na barra de título) e:
+- Troque a **Fonte** entre Courier New, Consolas, Lucida Console e Fixedsys.
+- Troque o **Tema de Cores** entre Pokédex Vermelho, Night Blue, Gold e Minimal.
+
+Qualquer alteração é aplicada imediatamente ao fechar e reabrir a interface.
 
 ---
 

@@ -17,14 +17,14 @@ AbrirConfigComboRevive() {
     cfg := GetCfg("comboRevive")
 
     cfgGui := Gui("-Caption +ToolWindow +AlwaysOnTop")
-    cfgGui.BackColor := "0x1A1A2E"
+    cfgGui.BackColor := T()["BG"]
     cfgGui.MarginX   := 0
     cfgGui.MarginY   := 0
     cfgGui.OnEvent("Escape", (*) => _FecharConfigCR(cfgGui))
     cfgGui.OnEvent("Close",  (*) => (cfgAberta := false))
     OnMessage(0x201, DragJanela)
 
-    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: COMBO REVIVE", "0xCC0000",
+    _CabecalhoConfig(cfgGui, W, IW, pad, "CONFIG: COMBO REVIVE", T()["STRIPE1"],
         (*) => ResetarConfigCR(),
         (*) => _FecharConfigCR(cfgGui))
 
@@ -59,32 +59,32 @@ AbrirConfigComboRevive() {
     usaAtk   := cfg["usarFullAtk"] = "true"
     usaDef   := cfg["usarFullDef"] = "true"
 
-    lbFA := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC",
+    lbFA := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"] "",
         "FULL ATTACK (TECLA GLOBAL: [ " StrUpper(faGlobal) " ])")
     lbFA.SetFont("s8 Bold", GF())
     y += 22
 
     rAtkSim := cfgGui.AddRadio("x" pad       " y" y " w16 h18 Group" (usaAtk  ? " Checked" : ""))
     rAtkNao := cfgGui.AddRadio("x" (pad+130) " y" y " w16 h18"       (!usaAtk ? " Checked" : ""))
-    lAS := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "ATIVAR")
+    lAS := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "ATIVAR")
     lAS.SetFont("s8", GF())
-    lAN := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "DESATIVAR")
+    lAN := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "DESATIVAR")
     lAN.SetFont("s8", GF())
     rAtkSim.OnEvent("Click", (*) => SalvarCfg("comboRevive", "usarFullAtk", "true"))
     rAtkNao.OnEvent("Click", (*) => SalvarCfg("comboRevive", "usarFullAtk", "false"))
 
     y += 28 , _Sep(cfgGui, y, W) , y += 10
 
-    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c0xAAAACC",
+    lbFD := cfgGui.AddText("x" pad " y" y " w" IW " c" T()["MUTED"] "",
         "FULL DEFENSE (TECLA GLOBAL: [ " StrUpper(fdGlobal) " ])")
     lbFD.SetFont("s8 Bold", GF())
     y += 22
 
     rDefSim := cfgGui.AddRadio("x" pad       " y" y " w16 h18 Group" (usaDef  ? " Checked" : ""))
     rDefNao := cfgGui.AddRadio("x" (pad+130) " y" y " w16 h18"       (!usaDef ? " Checked" : ""))
-    lDS := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "ATIVAR")
+    lDS := cfgGui.AddText("x" (pad+20)  " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "ATIVAR")
     lDS.SetFont("s8", GF())
-    lDN := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c0xF5F5F5 Background0x1A1A2E", "DESATIVAR")
+    lDN := cfgGui.AddText("x" (pad+150) " y" (y+1) " w100 h16 c" T()["TEXT"] " Background" T()["BG"] "", "DESATIVAR")
     lDN.SetFont("s8", GF())
     rDefSim.OnEvent("Click", (*) => SalvarCfg("comboRevive", "usarFullDef", "true"))
     rDefNao.OnEvent("Click", (*) => SalvarCfg("comboRevive", "usarFullDef", "false"))
@@ -92,13 +92,13 @@ AbrirConfigComboRevive() {
     y += 28 , _Sep(cfgGui, y, W) , y += 10
 
     ; ── Delay Combo (ms) ─────────────────────────────
-    lbl := cfgGui.AddText("x" pad " y" y " w" IW " h18 Center c0xAAAACC +0x200",
+    lbl := cfgGui.AddText("x" pad " y" y " w" IW " h18 Center c" T()["MUTED"] " +0x200",
         "DELAY APÓS REVIVE (MS)")
     lbl.SetFont("s8 Bold", GF())
     y += 22
 
     editDelay := cfgGui.AddEdit(
-        "x" pad " y" y " w" IW " h26 Center Number c0xF5F5F5 Background0x2D2D44 -E0x200",
+        "x" pad " y" y " w" IW " h26 Center Number c" T()["TEXT"] " Background" T()["BG2"] " -E0x200",
         cfg["delayCombo"])
     editDelay.SetFont("s10 Bold", GF())
     editDelay.OnEvent("Change", (ctrl, *) => SalvarCfg("comboRevive", "delayCombo", ctrl.Value))
@@ -113,7 +113,7 @@ AbrirConfigComboRevive() {
         (*) => CapturarCombo("comboRevive", "toggleHotkey", txtToggleCR, "HOTKEY TOGGLE"))
 
     y += 38
-    cfgGui.AddText("x0 y" y " w" W " h12 Background0x1A1A2E")
+    cfgGui.AddText("x0 y" y " w" W " h12 Background" T()["BG"] "")
     cfgGui.Show("w" W " Center")
 }
 
